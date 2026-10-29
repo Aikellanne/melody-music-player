@@ -89,16 +89,12 @@ const tracks = [
   }
 ];
 
-// ELEMENTOS DO HTML
-
 const audio = document.getElementById("audio");
 const cards = document.getElementById("cards");
 const rows = document.getElementById("trackRows");
 const search = document.getElementById("searchInput");
 
 const $ = id => document.getElementById(id);
-
-// ESTADO DA APLICAÇÃO
 
 let current = -1;
 let playing = false;
@@ -109,12 +105,9 @@ let view = "home";
 const liked = new Set();
 let recent = [];
 
-// FUNÇÕES AUXILIARES
-
 const coverStyle = track =>
   `background: linear-gradient(145deg, ${track.colors[0]}, ${track.colors[1]})`;
 
-// Atualiza um ícone Lucide
 function setIcon(element, name) {
   element.innerHTML = `<i data-lucide="${name}"></i>`;
 
@@ -123,37 +116,27 @@ function setIcon(element, name) {
   }
 }
 
-// Atualiza os ícones da página
 function refreshIcons() {
   if (window.lucide) {
     lucide.createIcons();
   }
 }
 
-// CARDS DAS MÚSICAS
-
 function renderCards(list = tracks.slice(0, 4)) {
   cards.innerHTML = "";
-
   list.forEach(track => {
     const index = tracks.indexOf(track);
-
     const card = document.createElement("article");
-
     card.className =
       "music-card" + (index === current ? " selected" : "");
-
     card.innerHTML = `
       <div class="cover" style="${coverStyle(track)}">
-
         <img
           class="cover-image"
           src="${track.cover}"
           alt="Capa de ${track.title}"
         >
-
         <span class="cover-tag">${track.tag}</span>
-
         <button
           class="mini-play"
           aria-label="Tocar ${track.title}"
@@ -162,9 +145,7 @@ function renderCards(list = tracks.slice(0, 4)) {
             index === current && playing ? "pause" : "play"
           }"></i>
         </button>
-
       </div>
-
       <h3>${track.title}</h3>
       <p>${track.artist}</p>
     `;
@@ -184,17 +165,12 @@ function renderCards(list = tracks.slice(0, 4)) {
   refreshIcons();
 }
 
-// TABELA DE MÚSICAS
-
 function renderRows(list = tracks) {
   rows.innerHTML = "";
-
   $("empty").style.display =
     list.length ? "none" : "block";
-
   list.forEach(track => {
     const index = tracks.indexOf(track);
-
     const row = document.createElement("tr");
 
     if (index === current) {
@@ -212,7 +188,6 @@ function renderRows(list = tracks) {
 
         <span>${track.title}</span>
       </td>
-
       <td>${track.artist}</td>
       <td>${track.mood}</td>
       <td>${track.time}</td>
@@ -225,8 +200,6 @@ function renderRows(list = tracks) {
     rows.appendChild(row);
   });
 }
-
-// ATUALIZA AS LISTAS
 
 function updateLists() {
   const query = search.value.trim().toLowerCase();
@@ -265,7 +238,6 @@ function updateLists() {
   $("featuredSection").style.display =
     view === "home" && !query ? "block" : "none";
 
-  // Título da página
   $("pageTitle").textContent = query
     ? "Resultados da busca"
     : view === "liked"
@@ -276,7 +248,6 @@ function updateLists() {
     ? "Sua biblioteca"
     : "Suas músicas, seu momento.";
 
-  // Subtítulo
   $("pageSub").textContent = query
     ? `Encontramos ${list.length} música(s) para você.`
     : view === "liked"
@@ -285,7 +256,6 @@ function updateLists() {
     ? "Continue de onde você parou."
     : "Explore suas músicas favoritas e descubra novos sons.";
 
-  // Título da lista
   $("listTitle").textContent = query
     ? "Resultados"
     : view === "liked"
@@ -294,8 +264,6 @@ function updateLists() {
     ? "Ouvidas recentemente"
     : "Todas as músicas";
 }
-
-// FORMATAÇÃO DO TEMPO
 
 function formatTime(seconds) {
   if (!Number.isFinite(seconds) || seconds < 0) {
@@ -309,8 +277,6 @@ function formatTime(seconds) {
 
   return `${minutes}:${remaining}`;
 }
-
-// REPRODUZIR MÚSICA
 
 function playTrack(index) {
   if (index < 0 || index >= tracks.length) {
@@ -350,8 +316,6 @@ function playTrack(index) {
   updatePlayer();
 }
 
-// PLAY E PAUSE
-
 function togglePlay() {
   if (current < 0) {
     playTrack(0);
@@ -375,12 +339,8 @@ function togglePlay() {
   }
 }
 
-// ATUALIZA O PLAYER
-
 function updatePlayer() {
   const track = tracks[current];
-
-  // Alterna o ícone de play e pause
   setIcon(
     $("playBtn"),
     playing ? "pause" : "play"
@@ -403,7 +363,6 @@ function updatePlayer() {
     $("nowTitle").textContent = track.title;
     $("nowArtist").textContent = track.artist;
 
-    // Ícone de favorito
     setIcon($("likeBtn"), "heart");
 
     const isLiked = liked.has(current);
@@ -431,8 +390,6 @@ function updatePlayer() {
   updateLists();
 }
 
-// PRÓXIMA MÚSICA
-
 function nextTrack() {
   if (current < 0) {
     playTrack(0);
@@ -446,8 +403,6 @@ function nextTrack() {
   playTrack(index);
 }
 
-// MÚSICA ANTERIOR
-
 function previousTrack() {
   if (audio.currentTime > 3) {
     audio.currentTime = 0;
@@ -459,14 +414,10 @@ function previousTrack() {
   );
 }
 
-// PESQUISA
-
 search.addEventListener("input", () => {
   view = "home";
   updateLists();
 });
-
-// BOTÕES DO PLAYER
 
 $("playBtn").addEventListener("click", togglePlay);
 
@@ -477,8 +428,6 @@ $("nextBtn").addEventListener("click", nextTrack);
 $("heroPlay").addEventListener("click", () => {
   current < 0 ? playTrack(0) : togglePlay();
 });
-
-// VOLUME
 
 $("volume").addEventListener("input", event => {
   audio.volume = Number(event.target.value);
@@ -492,16 +441,12 @@ $("volume").addEventListener("input", event => {
   setIcon($("volumeIcon"), icon);
 });
 
-// BARRA DE PROGRESSO
-
 $("progress").addEventListener("input", event => {
   if (audio.duration) {
     audio.currentTime =
       Number(event.target.value) / 100 * audio.duration;
   }
 });
-
-// ATUALIZA O TEMPO
 
 audio.addEventListener("timeupdate", () => {
   $("currentTime").textContent =
@@ -515,8 +460,6 @@ audio.addEventListener("timeupdate", () => {
     : 0;
 });
 
-// FIM DA MÚSICA
-
 audio.addEventListener("ended", () => {
   if (repeat) {
     audio.currentTime = 0;
@@ -526,8 +469,6 @@ audio.addEventListener("ended", () => {
   }
 });
 
-// MODO ALEATÓRIO
-
 $("shuffleBtn").addEventListener("click", () => {
   shuffle = !shuffle;
 
@@ -536,8 +477,6 @@ $("shuffleBtn").addEventListener("click", () => {
     : "#b7bdc9";
 });
 
-// REPETIR
-
 $("repeatBtn").addEventListener("click", () => {
   repeat = !repeat;
 
@@ -545,8 +484,6 @@ $("repeatBtn").addEventListener("click", () => {
     ? "var(--accent)"
     : "#b7bdc9";
 });
-
-// FAVORITOS
 
 $("likeBtn").addEventListener("click", () => {
   if (current < 0) {
@@ -562,15 +499,11 @@ $("likeBtn").addEventListener("click", () => {
   updatePlayer();
 });
 
-// VER TODAS AS MÚSICAS
-
 $("showAll").addEventListener("click", () => {
   view = "library";
   search.value = "";
   updateLists();
 });
-
-// LIMPAR PESQUISA
 
 $("clearSearch").addEventListener("click", () => {
   search.value = "";
@@ -578,22 +511,16 @@ $("clearSearch").addEventListener("click", () => {
   updateLists();
 });
 
-// VOLTAR
-
 $("backBtn").addEventListener("click", () => {
   search.value = "";
   view = "home";
   updateLists();
 });
 
-// AVANÇAR
-
 $("forwardBtn").addEventListener("click", () => {
   view = "library";
   updateLists();
 });
-
-// NAVEGAÇÃO
 
 document.querySelectorAll("[data-view]").forEach(button => {
   button.addEventListener("click", () => {
