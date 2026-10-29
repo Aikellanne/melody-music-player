@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Melody — seu espaço musical</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-icon">
+          <i data-lucide="audio-lines"></i>
+        </span>
+        melody
+      </div>
+
+      <div>
+        <p class="nav-label">Menu</p>
+
+        <nav class="nav">
+          <button class="active" data-view="home">
+            <span class="ico"><i data-lucide="house"></i></span>
+            <span>Início</span>
+          </button>
+
+          <button data-view="search">
+            <span class="ico"><i data-lucide="search"></i></span>
+            <span>Pesquisar</span>
+          </button>
+
+          <button data-view="library">
+            <span class="ico"><i data-lucide="library"></i></span>
+            <span>Sua biblioteca</span>
+          </button>
+        </nav>
+      </div>
+
+      <div>
+        <p class="nav-label">Sua coleção</p>
+
+        <nav class="nav">
+          <button data-view="liked">
+            <span class="ico"><i data-lucide="heart"></i></span>
+            <span>Músicas curtidas</span>
+          </button>
+
+          <button data-view="recent">
+            <span class="ico"><i data-lucide="history"></i></span>
+            <span>Tocadas recentemente</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="sidebar-note">
+        <strong>Um som para cada momento</strong>
+        Encontre sua próxima música favorita e curta o seu próprio ritmo.
+      </div>
+
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="back-forward">
+          <button class="circle-btn" aria-label="Voltar" id="backBtn">
+            <i data-lucide="chevron-left"></i>
+          </button>
+
+          <button class="circle-btn" aria-label="Avançar" id="forwardBtn">
+            <i data-lucide="chevron-right"></i>
+          </button>
+        </div>
+
+        <label class="search">
+          <i data-lucide="search"></i>
+          <input
+            id="searchInput"
+            type="search"
+            placeholder="O que você quer ouvir?"
+            aria-label="Pesquisar músicas"
+          >
+        </label>
+
+        <div class="profile">
+          <span class="avatar">G</span>
+          <span>Meu espaço</span>
+        </div>
+
+      </div>
+
+      <section class="hero">
+        <div>
+          <div class="eyebrow">Sua trilha sonora</div>
+
+          <h2>Encontre o seu próximo repeat.</h2>
+
+          <p>
+            Um cantinho para descobrir sons, revisitar favoritos
+            e deixar a música acompanhar seu dia.
+          </p>
+
+          <button class="primary" id="heroPlay">
+            <i data-lucide="play"></i>
+            Ouvir uma música
+          </button>
+        </div>
+
+        <div class="hero-art">
+          <span class="spark">✦</span>
+          <div class="disc"></div>
+        </div>
+      </section>
+
+      <div class="heading-row">
+        <div>
+          <div class="eyebrow">Feito para você</div>
+
+          <h1 id="pageTitle">
+            Suas músicas, seu momento.
+          </h1>
+
+          <div class="subtext" id="pageSub">
+            Explore suas músicas favoritas e descubra novos sons.
+          </div>
+        </div>
+      </div>
+
+      <section id="featuredSection">
+        <div class="section-title">
+          <h2>Escolhas do momento</h2>
+
+          <button id="showAll">
+            Ver tudo
+            <i data-lucide="arrow-up-right"></i>
+          </button>
+        </div>
+
+        <div class="cards" id="cards"></div>
+      </section>
+
+      <section id="listSection">
+        <div class="section-title">
+          <h2 id="listTitle">Todas as músicas</h2>
+          <button id="clearSearch">Limpar busca</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="track-table">
+            <thead>
+              <tr>
+                <th># / Música</th>
+                <th>Artista</th>
+                <th>Clima</th>
+                <th>Tempo</th>
+              </tr>
+            </thead>
+
+            <tbody id="trackRows"></tbody>
+          </table>
+
+          <div class="empty" id="empty">
+            Nenhuma música encontrada.
+            Tente outro título ou artista.
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div class="player">
+    <div class="now-playing">
+      <div class="now-cover" id="nowCover">🌙</div>
+      <div class="now-info">
+        <strong id="nowTitle">Escolha uma música</strong>
+        <span id="nowArtist">Sua próxima favorita está aqui</span>
+      </div>
+
+      <button class="heart" id="likeBtn" aria-label="Curtir música">
+        <i data-lucide="heart"></i>
+      </button>
+    </div>
+
+    <div class="controls">
+      <div class="control-buttons">
+        <button id="shuffleBtn" aria-label="Aleatório" title="Aleatório">
+          <i data-lucide="shuffle"></i>
+        </button>
+
+        <button id="prevBtn" aria-label="Música anterior" title="Anterior">
+          <i data-lucide="skip-back"></i>
+        </button>
+
+        <button
+          class="play-main"
+          id="playBtn"
+          aria-label="Reproduzir"
+          title="Reproduzir">
+          <i data-lucide="play"></i>
+        </button>
+
+        <button id="nextBtn" aria-label="Próxima música" title="Próxima">
+          <i data-lucide="skip-forward"></i>
+        </button>
+
+        <button id="repeatBtn" aria-label="Repetir" title="Repetir">
+          <i data-lucide="repeat-2"></i>
+        </button>
+      </div>
+
+      <div class="progress-row">
+        <span id="currentTime">0:00</span>
+
+        <input
+          class="progress"
+          id="progress"
+          type="range"
+          min="0"
+          max="100"
+          value="0"
+          aria-label="Progresso da música"
+        >
+
+        <span id="duration">0:00</span>
+      </div>
+    </div>
+
+    <div class="volume">
+      <span id="volumeIcon">
+        <i data-lucide="volume-2"></i>
+      </span>
+
+      <input
+        id="volume"
+        type="range"
+        min="0"
+        max="1"
+        step=".01"
+        value=".75"
+        aria-label="Volume">
+    </div>
+  </div>
+
+  <nav class="mobile-nav">
+    <button data-view="home">
+      <i data-lucide="house"></i>
+      Início
+    </button>
+
+    <button data-view="search">
+      <i data-lucide="search"></i>
+      Buscar
+    </button>
+
+    <button data-view="library">
+      <i data-lucide="library"></i>
+      Biblioteca
+    </button>
+
+    <button data-view="liked">
+      <i data-lucide="heart"></i>
+      Curtidas
+    </button>
+  </nav>
+
+  <audio id="audio" preload="metadata"></audio>
+
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+
+  <script src="script.js"></script>
+
+  <script>
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>
